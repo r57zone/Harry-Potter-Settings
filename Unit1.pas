@@ -52,7 +52,7 @@ var
   Form1: TForm1;
   HP3DocPath: string;
 
-  IDS_DONE: string;
+  IDS_DONE, IDS_DONE_HP1_2, IDS_DONE_HP3: string;
 
 implementation
 
@@ -143,6 +143,8 @@ begin
     FOVLbl.Caption:=Ini.ReadString('Main', 'ID_FOV', '');
     ApplyBtn.Caption:=Ini.ReadString('Main', 'ID_APPLY', '');
     IDS_DONE:=Ini.ReadString('Main', 'ID_DONE', '');
+    IDS_DONE_HP1_2:=Ini.ReadString('Main', 'ID_DONE_HP1_2', '');
+    IDS_DONE_HP3:=Ini.ReadString('Main', 'ID_DONE_HP3', '');
     CloseBtn.Caption:=Ini.ReadString('Main', 'ID_CLOSE', '');
 
     Ini.Free;
@@ -181,8 +183,10 @@ begin
     SubConfigPath:=DocumentsPath + '\' + HP2Demo2DocPath + '\User.ini';
   end;
 
-  if GameCB.Text = 'Harry Potter III' then
+  if GameCB.Text = 'Harry Potter III' then begin
     MainConfigPath:=DocumentsPath + '\' + HP3DocPath + '\' + HP3MainConfig;
+    SubConfigPath:=DocumentsPath + '\' + HP3DocPath + '\User.ini';
+  end;
 
   Ini:=TIniFile.Create(MainConfigPath);
   //Запуск в окне
@@ -206,9 +210,6 @@ begin
   if GameCB.Text = 'Harry Potter II Prototype' then
     DebugMenuCB.Checked:=(Ini.ReadString('HGame.baseConsole', 'bDebugMode', 'False') = 'True') and (Ini.ReadString('HGame.HPConsole', 'bShowConsole', 'False') = 'True');
 
-  if GameCB.Text = 'Harry Potter III' then
-    DebugMenuCB.Checked:=(Ini.ReadString('HGame.baseConsole', 'bDebugMode', 'False') = 'True');
-
   //Разрешение в полноэкранном режиме
   ResolutionsCB.Text:=IntToStr(Ini.ReadInteger('WinDrv.WindowsClient', 'FullscreenViewportX', 640)) + 'x' + IntToStr(Ini.ReadInteger('WinDrv.WindowsClient', 'FullscreenViewportY', 480));
 
@@ -220,11 +221,13 @@ begin
 
   Ini.Free;
 
-  if GameCB.Text <> 'Harry Potter III' then begin
-    Ini:=TIniFile.Create(SubConfigPath);
-    FOVCB.Text:=Ini.ReadString('Engine.PlayerPawn', 'DesiredFOV', '90');
-    Ini.Free;
-  end;
+  Ini:=TIniFile.Create(SubConfigPath);
+  if GameCB.Text <> 'Harry Potter III' then
+    FOVCB.Text:=Ini.ReadString('Engine.PlayerPawn', 'DesiredFOV', '90')
+  else //Режим отладки
+    DebugMenuCB.Checked:=(Ini.ReadString('Engine.Input', 'F10', '') = 'set kwgame.kwversion bdebugenabled true');
+
+  Ini.Free;
 end;
 
 procedure TForm1.GameCBChange(Sender: TObject);
@@ -276,8 +279,10 @@ begin
     SubConfigPath:=DocumentsPath + '\' + HP2Demo2DocPath + '\User.ini';
   end;
 
-  if GameCB.Text = 'Harry Potter III' then
+  if GameCB.Text = 'Harry Potter III' then begin
     MainConfigPath:=DocumentsPath + '\' + HP3DocPath + '\' + HP3MainConfig;
+    SubConfigPath:=DocumentsPath + '\' + HP3DocPath + '\User.ini';
+  end;
 
   //Атрибы для редактирования
   if FileGetAttr(MainConfigPath) = faReadOnly then
@@ -358,35 +363,40 @@ begin
   if GameCB.Text = 'Harry Potter III' then begin
     Ini.WriteString('Engine.PlayerController', 'DesiredFOV', FOV);
     Ini.WriteString('Engine.PlayerController', 'DefaultFOV', FOV);
+    Ini.WriteString('Engine.PlayerController', 'DefaultFOV', FOV);
     Ini.WriteString('Engine.Engine', 'RenderDevice', 'OpenGLDrv.OpenGLRenderDevice'); //Исправление Windows 10? На Windows 7 не работает
   end;
 
   Ini.Free;
 
+  Ini:=TIniFile.Create(SubConfigPath);
   if (GameCB.Text <> 'Harry Potter III') then begin
-    Ini:=TIniFile.Create(SubConfigPath);
     Ini.WriteString('Engine.PlayerPawn', 'DesiredFOV', FOV);
     Ini.WriteString('Engine.PlayerPawn', 'DefaultFOV', FOV);
     Ini.WriteString('Engine.Input', 'F10', 'flush'); //Исправление проблем с прозрачностью текстур
-    Ini.Free;
-  end;
+  end else if DebugMenuCB.Checked then
+      Ini.WriteString('Engine.Input', 'F10', 'set kwgame.kwversion bdebugenabled true') //Режим отладки для HP3
+    else
+      Ini.WriteString('Engine.Input', 'F10', 'set kwgame.kwversion bdebugenabled false');
+  Ini.Free;
 
   //Атрибы только для чтения
   FileSetAttr(MainConfigPath, faReadOnly);
   FileSetAttr(SubConfigPath, faReadOnly);
 
-  Application.MessageBox(PChar(IDS_DONE), PChar(Caption), MB_ICONINFORMATION);
+  if (GameCB.Text <> 'Harry Potter III') then
+    Application.MessageBox(PChar(IDS_DONE + #13#10 + #13#10 + StringReplace(IDS_DONE_HP1_2, '\n', #13#10, [rfReplaceAll])), PChar(Caption), MB_ICONINFORMATION)
+  else
+    Application.MessageBox(PChar(IDS_DONE + #13#10 + #13#10 + StringReplace(IDS_DONE_HP3, '\n', #13#10, [rfReplaceAll])), PChar(Caption), MB_ICONINFORMATION);
+
 end;
 
 procedure TForm1.AboutBtnClick(Sender: TObject);
 begin
   Application.MessageBox(PChar(Caption + ' 1.0' + #13#10 +
-  'Последнее обновление: 27.02.2019' + #13#10 +
+  'Last update: 08.03.2019' + #13#10 +
   'https://r57zone.github.io' + #13#10 +
-  'r57zone@gmail.com' + #13#10 + #13#10 +
-  'Клавиши:' + #13#10 +
-  'F10 - исправление проблем с текстурами;'
-  ), PChar(Caption), MB_ICONINFORMATION);
+  'r57zone@gmail.com'), PChar(Caption), MB_ICONINFORMATION);
 end;
 
 procedure TForm1.CloseBtnClick(Sender: TObject);
