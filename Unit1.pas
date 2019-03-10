@@ -7,7 +7,7 @@ uses
   Dialogs, StdCtrls, XPMan, ShlObj, IniFiles;
 
 type
-  TForm1 = class(TForm)
+  TMain = class(TForm)
     GameCB: TComboBox;
     SelectGameLbl: TLabel;
     XPManifest: TXPManifest;
@@ -49,10 +49,10 @@ const
   HP3MainConfig = 'hppoa.ini';
 
 var
-  Form1: TForm1;
+  Main: TMain;
   HP3DocPath: string;
 
-  IDS_DONE, IDS_DONE_HP1_2, IDS_DONE_HP3: string;
+  IDS_DONE, IDS_DONE_HP1_2, IDS_DONE_HP3, IDS_HARDWARE_ACCELERATION, IDS_DIRECTX, IDS_LAST_UPDATE: string;
 
 implementation
 
@@ -78,7 +78,7 @@ begin
   Result:=pcLCA;
 end;
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TMain.FormCreate(Sender: TObject);
 var
   Ini: TIniFile;
 begin
@@ -135,7 +135,8 @@ begin
     SelectGameLbl.Caption:=Ini.ReadString('Main', 'ID_SELECT_GAME', '');
     GameGB.Caption:=Ini.ReadString('Main', 'ID_GAME', '');
     WindowModeCB.Caption:=Ini.ReadString('Main', 'ID_RUN_IN_WINDOW', '');
-    HardwareAccelerationCB.Caption:=Ini.ReadString('Main', 'ID_HARDWARE_ACCELERATION', '');
+    IDS_HARDWARE_ACCELERATION:=Ini.ReadString('Main', 'ID_HARDWARE_ACCELERATION', '');
+    HardwareAccelerationCB.Caption:=IDS_HARDWARE_ACCELERATION; //Используется из-за HP3 OpenGL / DirectX
     DebugMenuCB.Caption:=Ini.ReadString('Main', 'ID_DEBUG_MODE', '');
     VideoGB.Caption:=Ini.ReadString('Main', 'ID_VIDEO', '');
     ResolutionLbl.Caption:=Ini.ReadString('Main', 'ID_FULLSCREEN_RESOLUTION', '');
@@ -145,18 +146,22 @@ begin
     IDS_DONE:=Ini.ReadString('Main', 'ID_DONE', '');
     IDS_DONE_HP1_2:=Ini.ReadString('Main', 'ID_DONE_HP1_2', '');
     IDS_DONE_HP3:=Ini.ReadString('Main', 'ID_DONE_HP3', '');
+    IDS_DIRECTX:=Ini.ReadString('Main', 'ID_DIRECTX', '');
+    IDS_LAST_UPDATE:=Ini.ReadString('Main', 'ID_LAST_UPDATE', '');
     CloseBtn.Caption:=Ini.ReadString('Main', 'ID_CLOSE', '');
 
     Ini.Free;
   end;
 end;
 
-procedure TForm1.UpdateSettings;
+procedure TMain.UpdateSettings;
 var
   Ini: TIniFile;
   MainConfigPath, SubConfigPath: string;
 begin
   if GameCB.Text = '...' then Exit;
+
+  HardwareAccelerationCB.Caption:=IDS_HARDWARE_ACCELERATION;
 
   if GameCB.Text = 'Harry Potter I' then begin
     MainConfigPath:=DocumentsPath + '\' + HP1DocPath + '\' + HP1MainConfig;
@@ -196,8 +201,8 @@ begin
   if GameCB.Text <> 'Harry Potter III' then
     HardwareAccelerationCB.Checked:=not Ini.ReadBool('FirstRun', 'ForceSoftware', False)
   else begin
-    HardwareAccelerationCB.Checked:=true;
-    HardwareAccelerationCB.Enabled:=false;
+    HardwareAccelerationCB.Caption:=IDS_DIRECTX;
+    HardwareAccelerationCB.Checked:=Ini.ReadString('Engine.Engine', 'RenderDevice', '') = 'D3DDrv.D3DRenderDevice';
   end;
 
   //Режим отладки
@@ -230,13 +235,13 @@ begin
   Ini.Free;
 end;
 
-procedure TForm1.GameCBChange(Sender: TObject);
+procedure TMain.GameCBChange(Sender: TObject);
 begin
   DefaultSettings;
   UpdateSettings;
 end;
 
-procedure TForm1.DefaultSettings;
+procedure TMain.DefaultSettings;
 begin
   WindowModeCB.Checked:=false;
   HardwareAccelerationCB.Enabled:=true;
@@ -247,7 +252,7 @@ begin
   FOVCB.Text:='90 (4:3)';
 end;
 
-procedure TForm1.ApplyBtnClick(Sender: TObject);
+procedure TMain.ApplyBtnClick(Sender: TObject);
 var
   Ini: TIniFile;
   ResWidth, ResHeight: integer;
@@ -331,13 +336,6 @@ begin
       Ini.WriteString('HGame.HPConsole', 'bShowConsole', 'False');
     end;
 
-  if (GameCB.Text = 'Harry Potter III') then
-    if DebugMenuCB.Checked then begin
-      Ini.WriteString('HGame.baseConsole', 'bDebugMode', 'True');
-      Ini.WriteString('HGame.baseConsole', 'bUseSystemFonts', 'True');
-    end else
-      Ini.WriteString('HGame.baseConsole', 'bDebugMode', 'False');
-
   if (GameCB.Text = 'Harry Potter I') or (GameCB.Text = 'Harry Potter II Prototype')
   or (GameCB.Text = 'Harry Potter II - Demo 1') or (GameCB.Text = 'Harry Potter II - Demo 2') then
     Ini.WriteInteger('WinDrv.WindowsClient', 'FullscreenColorBits', 32); //По умолчанию стоит 16
@@ -364,7 +362,12 @@ begin
     Ini.WriteString('Engine.PlayerController', 'DesiredFOV', FOV);
     Ini.WriteString('Engine.PlayerController', 'DefaultFOV', FOV);
     Ini.WriteString('Engine.PlayerController', 'DefaultFOV', FOV);
-    Ini.WriteString('Engine.Engine', 'RenderDevice', 'OpenGLDrv.OpenGLRenderDevice'); //Исправление Windows 10? На Windows 7 не работает
+
+    //OpenGL иногда вылетает, а иногда решает проблемы с совместимостью
+    if HardwareAccelerationCB.Checked then
+      Ini.WriteString('Engine.Engine', 'RenderDevice', 'D3DDrv.D3DRenderDevice')
+    else
+      Ini.WriteString('Engine.Engine', 'RenderDevice', 'OpenGLDrv.OpenGLRenderDevice');
   end;
 
   Ini.Free;
@@ -391,15 +394,15 @@ begin
 
 end;
 
-procedure TForm1.AboutBtnClick(Sender: TObject);
+procedure TMain.AboutBtnClick(Sender: TObject);
 begin
-  Application.MessageBox(PChar(Caption + ' 1.0' + #13#10 +
-  'Last update: 08.03.2019' + #13#10 +
+  Application.MessageBox(PChar(Caption + ' 1.0.2' + #13#10 +
+  IDS_LAST_UPDATE + ' 10.03.2019' + #13#10 +
   'https://r57zone.github.io' + #13#10 +
   'r57zone@gmail.com'), PChar(Caption), MB_ICONINFORMATION);
 end;
 
-procedure TForm1.CloseBtnClick(Sender: TObject);
+procedure TMain.CloseBtnClick(Sender: TObject);
 begin
   Close();
 end;
