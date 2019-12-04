@@ -30,6 +30,8 @@ type
     procedure ApplyBtnClick(Sender: TObject);
     procedure CloseBtnClick(Sender: TObject);
     procedure AboutBtnClick(Sender: TObject);
+    procedure ResolutionsCBChange(Sender: TObject);
+    procedure ResolutionsWndCBChange(Sender: TObject);
   private
     procedure DefaultSettings;
     procedure UpdateSettings;
@@ -392,19 +394,57 @@ begin
   else
     Application.MessageBox(PChar(IDS_DONE + #13#10 + #13#10 + StringReplace(IDS_DONE_HP3, '\n', #13#10, [rfReplaceAll])), PChar(Caption), MB_ICONINFORMATION);
 
+  Close;
 end;
 
 procedure TMain.AboutBtnClick(Sender: TObject);
 begin
   Application.MessageBox(PChar(Caption + ' 1.0.2' + #13#10 +
-  IDS_LAST_UPDATE + ' 10.03.2019' + #13#10 +
+  IDS_LAST_UPDATE + ' 04.12.2019' + #13#10 +
   'https://r57zone.github.io' + #13#10 +
   'r57zone@gmail.com'), PChar(Caption), MB_ICONINFORMATION);
 end;
 
 procedure TMain.CloseBtnClick(Sender: TObject);
 begin
-  Close();
+  Close;
+end;
+
+procedure SelectFOV(ResWidth, ResHeight: integer);
+var
+  i, ARWidth, ARHeight: integer; AspectRatio: string; AspectFound: boolean;
+begin
+  AspectFound:=false;
+  for i:=0 to Main.FOVCB.Items.Count - 1 do begin
+    AspectRatio:=Copy(Main.FOVCB.Items.Strings[i], Pos('(', Main.FOVCB.Items.Strings[i]) + 1, Length(Main.FOVCB.Items.Strings[i]) - Pos('(', Main.FOVCB.Items.Strings[i]) - 1);
+    ARWidth:=StrToIntDef(Copy(AspectRatio, 1, Pos(':', AspectRatio) - 1), 4);
+    ARHeight:=StrToIntDef(Copy(AspectRatio, Pos(':', AspectRatio) + 1, Length(AspectRatio)), 3);
+    if Round((ResWidth / ResHeight) * 100) = Round((ARWidth / ARHeight) * 100) then begin
+      AspectFound:=true;
+      Main.FOVCB.ItemIndex:=i;
+      break;
+    end;
+  end;
+  if AspectFound = false then
+    Main.FOVCB.ItemIndex:=0;
+end;
+
+procedure TMain.ResolutionsCBChange(Sender: TObject);
+var
+  ResWidth, ResHeight: integer;
+begin
+  ResWidth:=StrToIntDef(Copy(ResolutionsCB.Text, 1, Pos('x', ResolutionsCB.Text) - 1), 640);
+  ResHeight:=StrToIntDef(Copy(ResolutionsCB.Text, Pos('x', ResolutionsCB.Text) + 1, Length(ResolutionsCB.Text)), 480);
+  SelectFOV(ResWidth, ResHeight);
+end;
+
+procedure TMain.ResolutionsWndCBChange(Sender: TObject);
+var
+  ResWidth, ResHeight: integer;
+begin
+  ResWidth:=StrToIntDef(Copy(ResolutionsWndCB.Text, 1, Pos('x', ResolutionsWndCB.Text) - 1), 640);
+  ResHeight:=StrToIntDef(Copy(ResolutionsWndCB.Text, Pos('x', ResolutionsWndCB.Text) + 1, Length(ResolutionsWndCB.Text)), 480);
+  SelectFOV(ResWidth, ResHeight)
 end;
 
 end.

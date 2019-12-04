@@ -102,6 +102,7 @@ object Main: TMain
       ItemHeight = 13
       TabOrder = 0
       Text = '640x480'
+      OnChange = ResolutionsCBChange
       Items.Strings = (
         '640x480'
         '800x600'
@@ -138,6 +139,7 @@ object Main: TMain
       ItemHeight = 13
       TabOrder = 1
       Text = '640x480'
+      OnChange = ResolutionsWndCBChange
       Items.Strings = (
         '640x480'
         '800x600'
