@@ -13,7 +13,7 @@ Application allows to change the game and graphics settings in the following PC 
 Pressing the "F10" key in the game fixes textures problems.
 
 ## Screenshots
-![](https://user-images.githubusercontent.com/9499881/53477113-6fae3b80-3a8d-11e9-9ab8-d2d08f42a7fd.png)
+![](https://user-images.githubusercontent.com/9499881/74330379-03663e00-4dab-11ea-90fb-1c4bbc817cd2.png)
 
 ## Download
 >Version for Windows 7, 8.1, 10.
