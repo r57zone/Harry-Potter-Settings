@@ -54,7 +54,7 @@ var
   Main: TMain;
   HP3DocPath: string;
 
-  IDS_DONE, IDS_DONE_HP1_2, IDS_DONE_HP3, IDS_HARDWARE_ACCELERATION, IDS_DIRECTX, IDS_LAST_UPDATE: string;
+  ID_NO_GAMES_FOUND, IDS_DONE, IDS_DONE_HP1_2, IDS_DONE_HP3, IDS_HARDWARE_ACCELERATION, IDS_DIRECTX, IDS_LAST_UPDATE: string;
 
 implementation
 
@@ -145,6 +145,7 @@ begin
     ResolutionWndLbl.Caption:=Ini.ReadString('Main', 'ID_WINDOW_RESOLUTION', '');
     FOVLbl.Caption:=Ini.ReadString('Main', 'ID_FOV', '');
     ApplyBtn.Caption:=Ini.ReadString('Main', 'ID_APPLY', '');
+    ID_NO_GAMES_FOUND:=Ini.ReadString('Main', 'ID_NO_GAMES_FOUND', '');
     IDS_DONE:=Ini.ReadString('Main', 'ID_DONE', '');
     IDS_DONE_HP1_2:=Ini.ReadString('Main', 'ID_DONE_HP1_2', '');
     IDS_DONE_HP3:=Ini.ReadString('Main', 'ID_DONE_HP3', '');
@@ -291,6 +292,11 @@ begin
     SubConfigPath:=DocumentsPath + '\' + HP3DocPath + '\User.ini';
   end;
 
+  if MainConfigPath = '' then begin
+    Application.MessageBox(PChar(ID_NO_GAMES_FOUND), PChar(Caption), MB_ICONWARNING);
+    Exit;
+  end;
+
   //Атрибы для редактирования
   if FileGetAttr(MainConfigPath) = faReadOnly then
     FileSetAttr(MainConfigPath, not faReadOnly);
@@ -399,8 +405,8 @@ end;
 
 procedure TMain.AboutBtnClick(Sender: TObject);
 begin
-  Application.MessageBox(PChar(Caption + ' 1.0.3' + #13#10 +
-  IDS_LAST_UPDATE + ' 04.12.2019' + #13#10 +
+  Application.MessageBox(PChar(Caption + ' 1.0.4' + #13#10 +
+  IDS_LAST_UPDATE + ' 06.09.2020' + #13#10 +
   'https://r57zone.github.io' + #13#10 +
   'r57zone@gmail.com'), PChar(Caption), MB_ICONINFORMATION);
 end;
