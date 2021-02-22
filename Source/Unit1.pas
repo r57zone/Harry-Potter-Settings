@@ -297,7 +297,7 @@ begin
     Exit;
   end;
 
-  //Атрибы для редактирования
+  //Атрибуты для редактирования
   if FileGetAttr(MainConfigPath) = faReadOnly then
     FileSetAttr(MainConfigPath, not faReadOnly);
   if FileGetAttr(SubConfigPath) = faReadOnly then
@@ -344,11 +344,14 @@ begin
       Ini.WriteString('HGame.HPConsole', 'bShowConsole', 'False');
     end;
 
+  //Улучшения, исправляющие проблемы
   if (GameCB.Text = 'Harry Potter I') or (GameCB.Text = 'Harry Potter II Prototype')
-  or (GameCB.Text = 'Harry Potter II - Demo 1') or (GameCB.Text = 'Harry Potter II - Demo 2') then
-    Ini.WriteInteger('WinDrv.WindowsClient', 'FullscreenColorBits', 32); //По умолчанию стоит 16
-  if GameCB.Text = 'Harry Potter II - Demo 2' then
-    Ini.WriteInteger('WinDrv.WindowsClient', 'WindowedColorBits', 32); //По умолчанию стоит 16
+  or (GameCB.Text = 'Harry Potter II - Demo 1') or (GameCB.Text = 'Harry Potter II - Demo 2')
+  or (GameCB.Text = 'Harry Potter II') then begin
+    Ini.WriteInteger('WinDrv.WindowsClient', 'WindowedColorBits', 32);
+    Ini.WriteInteger('WinDrv.WindowsClient', 'FullscreenColorBits', 32);
+    Ini.WriteString('D3DDrv.D3DRenderDevice', 'UsePrecache', 'False');
+  end;
 
   //Разрешение в полноэкранном режиме
   ResWidth:=StrToIntDef(Copy(ResolutionsCB.Text, 1, Pos('x', ResolutionsCB.Text) - 1), 640);
@@ -391,7 +394,7 @@ begin
       Ini.WriteString('Engine.Input', 'F10', 'set kwgame.kwversion bdebugenabled false');
   Ini.Free;
 
-  //Атрибы только для чтения
+  //Атрибуты только для чтения
   FileSetAttr(MainConfigPath, faReadOnly);
   FileSetAttr(SubConfigPath, faReadOnly);
 
@@ -405,8 +408,8 @@ end;
 
 procedure TMain.AboutBtnClick(Sender: TObject);
 begin
-  Application.MessageBox(PChar(Caption + ' 1.0.4' + #13#10 +
-  IDS_LAST_UPDATE + ' 06.09.2020' + #13#10 +
+  Application.MessageBox(PChar(Caption + ' 1.0.5' + #13#10 +
+  IDS_LAST_UPDATE + ' 22.02.2021' + #13#10 +
   'https://r57zone.github.io' + #13#10 +
   'r57zone@gmail.com'), PChar(Caption), MB_ICONINFORMATION);
 end;
