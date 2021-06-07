@@ -25,6 +25,7 @@ type
     ResolutionWndLbl: TLabel;
     ResolutionsWndCB: TComboBox;
     HardwareAccelerationCB: TCheckBox;
+    SettingsReadOnlyCB: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure GameCBChange(Sender: TObject);
     procedure ApplyBtnClick(Sender: TObject);
@@ -54,12 +55,12 @@ var
   Main: TMain;
   HP3DocPath: string;
 
-  ID_NO_GAMES_FOUND, IDS_DONE, IDS_DONE_HP1_2, IDS_DONE_HP3, IDS_HARDWARE_ACCELERATION, IDS_DIRECTX, IDS_LAST_UPDATE: string;
+  IDS_NO_GAMES_FOUND, IDS_DONE, IDS_DONE_HP1_2, IDS_DONE_HP3, IDS_HARDWARE_ACCELERATION, IDS_DIRECTX, IDS_LAST_UPDATE: string;
 
 implementation
 
 {$R *.dfm}
-{$R UAC.RES} //Права для редактирования атрибутов файлов
+{$R UAC.RES} // Права для редактирования атрибутов файлов
 
 function DocumentsPath: string;
 var
@@ -94,7 +95,7 @@ begin
   if FileExists(ExtractFilePath(ParamStr(0)) + 'FOVs.txt') then
     FOVCB.Items.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'FOVs.txt');
 
-  //Ищем и добавляем установленные игры
+  // Ищем и добавляем установленные игры
   if FileExists(DocumentsPath + '\' + HP1DocPath + '\' + HP1MainConfig) and FileExists(DocumentsPath + '\' + HP1DocPath + '\User.ini') then
     GameCB.Items.Add('Harry Potter I');
 
@@ -114,11 +115,13 @@ begin
     HP3DocPath:='Harry Potter and the Prisoner of Azkaban';
   if DirectoryExists(DocumentsPath + '\' + 'Гарри Поттер и узник Азкабана') then
     HP3DocPath:='Гарри Поттер и узник Азкабана';
+  if DirectoryExists(DocumentsPath + '\' + 'Harry Potter™ e il prigioniero di Azkaban') then // Italian
+    HP3DocPath:='Harry Potter™ e il prigioniero di Azkaban';
 
   if FileExists(DocumentsPath + '\' + HP3DocPath + '\' + HP3MainConfig) then
     GameCB.Items.Add('Harry Potter III');
 
-  //Если игр не найдено, то блокируем выбор игры
+  // Если игр не найдено, то блокируем выбор игры
   if GameCB.Items.Count = 0 then begin
     GameCB.Text:='...';
     GameCB.Enabled:=false;
@@ -127,31 +130,32 @@ begin
 
   UpdateSettings;
 
-  //Перевод
+  // Перевод
   if DirectoryExists(ExtractFilePath(ParamStr(0)) + 'Languages') then begin
     if FileExists(ExtractFilePath(ParamStr(0)) + 'Languages\' + GetLocaleInformation(LOCALE_SENGLANGUAGE) + '.ini') then
       Ini:=TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'Languages\' + GetLocaleInformation(LOCALE_SENGLANGUAGE) + '.ini')
     else
       Ini:=TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'Languages\English.ini');
 
-    SelectGameLbl.Caption:=Ini.ReadString('Main', 'ID_SELECT_GAME', '');
-    GameGB.Caption:=Ini.ReadString('Main', 'ID_GAME', '');
-    WindowModeCB.Caption:=Ini.ReadString('Main', 'ID_RUN_IN_WINDOW', '');
-    IDS_HARDWARE_ACCELERATION:=Ini.ReadString('Main', 'ID_HARDWARE_ACCELERATION', '');
+    SelectGameLbl.Caption:=Ini.ReadString('Main', 'IDS_SELECT_GAME', '');
+    GameGB.Caption:=Ini.ReadString('Main', 'IDS_GAME', '');
+    WindowModeCB.Caption:=Ini.ReadString('Main', 'IDS_RUN_IN_WINDOW', '');
+    IDS_HARDWARE_ACCELERATION:=Ini.ReadString('Main', 'IDS_HARDWARE_ACCELERATION', '');
     HardwareAccelerationCB.Caption:=IDS_HARDWARE_ACCELERATION; //Используется из-за HP3 OpenGL / DirectX
-    DebugMenuCB.Caption:=Ini.ReadString('Main', 'ID_DEBUG_MODE', '');
-    VideoGB.Caption:=Ini.ReadString('Main', 'ID_VIDEO', '');
-    ResolutionLbl.Caption:=Ini.ReadString('Main', 'ID_FULLSCREEN_RESOLUTION', '');
-    ResolutionWndLbl.Caption:=Ini.ReadString('Main', 'ID_WINDOW_RESOLUTION', '');
-    FOVLbl.Caption:=Ini.ReadString('Main', 'ID_FOV', '');
-    ApplyBtn.Caption:=Ini.ReadString('Main', 'ID_APPLY', '');
-    ID_NO_GAMES_FOUND:=Ini.ReadString('Main', 'ID_NO_GAMES_FOUND', '');
-    IDS_DONE:=Ini.ReadString('Main', 'ID_DONE', '');
-    IDS_DONE_HP1_2:=Ini.ReadString('Main', 'ID_DONE_HP1_2', '');
-    IDS_DONE_HP3:=Ini.ReadString('Main', 'ID_DONE_HP3', '');
-    IDS_DIRECTX:=Ini.ReadString('Main', 'ID_DIRECTX', '');
-    IDS_LAST_UPDATE:=Ini.ReadString('Main', 'ID_LAST_UPDATE', '');
-    CloseBtn.Caption:=Ini.ReadString('Main', 'ID_CLOSE', '');
+    DebugMenuCB.Caption:=Ini.ReadString('Main', 'IDS_DEBUG_MODE', '');
+    SettingsReadOnlyCB.Caption:=Ini.ReadString('Main', 'IDS_SETTINGS_READ_ONLY', '');
+    VideoGB.Caption:=Ini.ReadString('Main', 'IDS_VIDEO', '');
+    ResolutionLbl.Caption:=Ini.ReadString('Main', 'IDS_FULLSCREEN_RESOLUTION', '');
+    ResolutionWndLbl.Caption:=Ini.ReadString('Main', 'IDS_WINDOW_RESOLUTION', '');
+    FOVLbl.Caption:=Ini.ReadString('Main', 'IDS_FOV', '');
+    ApplyBtn.Caption:=Ini.ReadString('Main', 'IDS_APPLY', '');
+    IDS_NO_GAMES_FOUND:=Ini.ReadString('Main', 'IDS_NO_GAMES_FOUND', '');
+    IDS_DONE:=Ini.ReadString('Main', 'IDS_DONE', '');
+    IDS_DONE_HP1_2:=Ini.ReadString('Main', 'IDS_DONE_HP1_2', '');
+    IDS_DONE_HP3:=Ini.ReadString('Main', 'IDS_DONE_HP3', '');
+    IDS_DIRECTX:=Ini.ReadString('Main', 'IDS_DIRECTX', '');
+    IDS_LAST_UPDATE:=Ini.ReadString('Main', 'IDS_LAST_UPDATE', '');
+    CloseBtn.Caption:=Ini.ReadString('Main', 'IDS_CLOSE', '');
 
     Ini.Free;
   end;
@@ -197,10 +201,10 @@ begin
   end;
 
   Ini:=TIniFile.Create(MainConfigPath);
-  //Запуск в окне
+  // Запуск в окне
   WindowModeCB.Checked:=Ini.ReadString('WinDrv.WindowsClient', 'StartupFullscreen', 'True') <> 'True';
 
-  //Аппаратное ускорение
+  // Аппаратное ускорение
   if GameCB.Text <> 'Harry Potter III' then
     HardwareAccelerationCB.Checked:=not Ini.ReadBool('FirstRun', 'ForceSoftware', False)
   else begin
@@ -208,7 +212,7 @@ begin
     HardwareAccelerationCB.Checked:=Ini.ReadString('Engine.Engine', 'RenderDevice', '') = 'D3DDrv.D3DRenderDevice';
   end;
 
-  //Режим отладки
+  // Режим отладки
   if GameCB.Text = 'Harry Potter I' then
     DebugMenuCB.Checked:=(Ini.ReadString('HPBase.baseConsole', 'bDebugMode', 'False') = 'True') and (Ini.ReadString('HPMenu.HPConsole', 'bShowConsole', 'False') = 'True');
 
@@ -218,7 +222,7 @@ begin
   if GameCB.Text = 'Harry Potter II Prototype' then
     DebugMenuCB.Checked:=(Ini.ReadString('HGame.baseConsole', 'bDebugMode', 'False') = 'True') and (Ini.ReadString('HGame.HPConsole', 'bShowConsole', 'False') = 'True');
 
-  //Разрешение в полноэкранном режиме
+  // Разрешение в полноэкранном режиме
   ResolutionsCB.Text:=IntToStr(Ini.ReadInteger('WinDrv.WindowsClient', 'FullscreenViewportX', 640)) + 'x' + IntToStr(Ini.ReadInteger('WinDrv.WindowsClient', 'FullscreenViewportY', 480));
 
   //Разрешение в окне
@@ -293,28 +297,28 @@ begin
   end;
 
   if MainConfigPath = '' then begin
-    Application.MessageBox(PChar(ID_NO_GAMES_FOUND), PChar(Caption), MB_ICONWARNING);
+    Application.MessageBox(PChar(IDS_NO_GAMES_FOUND), PChar(Caption), MB_ICONWARNING);
     Exit;
   end;
 
-  //Атрибуты для редактирования
+  // Атрибуты для редактирования
   if FileGetAttr(MainConfigPath) = faReadOnly then
-    FileSetAttr(MainConfigPath, not faReadOnly);
+    FileSetAttr(MainConfigPath, FileGetAttr(MainConfigPath) and not faReadOnly);
   if FileGetAttr(SubConfigPath) = faReadOnly then
-    FileSetAttr(SubConfigPath, not faReadOnly);
+    FileSetAttr(SubConfigPath, FileGetAttr(SubConfigPath) and not faReadOnly);
 
   Ini:=TIniFile.Create(MainConfigPath);
-  //Запуск в окне
+  // Запуск в окне
   if WindowModeCB.Checked then
     Ini.WriteString('WinDrv.WindowsClient', 'StartupFullscreen', 'False')
   else
     Ini.WriteString('WinDrv.WindowsClient', 'StartupFullscreen', 'True');
 
-  //Аппаратное ускорение
+  // Аппаратное ускорение
   if GameCB.Text <> 'Harry Potter III' then
     Ini.WriteBool('FirstRun', 'ForceSoftware', not HardwareAccelerationCB.Checked);
 
-  //Режим отладки
+  // Режим отладки
   if GameCB.Text = 'Harry Potter I' then
     if DebugMenuCB.Checked then begin
       Ini.WriteString('HPBase.baseConsole', 'bDebugMode', 'True');
@@ -344,7 +348,7 @@ begin
       Ini.WriteString('HGame.HPConsole', 'bShowConsole', 'False');
     end;
 
-  //Улучшения, исправляющие проблемы
+  // Улучшения, исправляющие проблемы
   if (GameCB.Text = 'Harry Potter I') or (GameCB.Text = 'Harry Potter II Prototype')
   or (GameCB.Text = 'Harry Potter II - Demo 1') or (GameCB.Text = 'Harry Potter II - Demo 2')
   or (GameCB.Text = 'Harry Potter II') then begin
@@ -353,13 +357,13 @@ begin
     Ini.WriteString('D3DDrv.D3DRenderDevice', 'UsePrecache', 'False');
   end;
 
-  //Разрешение в полноэкранном режиме
+  // Разрешение в полноэкранном режиме
   ResWidth:=StrToIntDef(Copy(ResolutionsCB.Text, 1, Pos('x', ResolutionsCB.Text) - 1), 640);
   ResHeight:=StrToIntDef(Copy(ResolutionsCB.Text, Pos('x', ResolutionsCB.Text) + 1, Length(ResolutionsCB.Text)), 480);
   Ini.WriteInteger('WinDrv.WindowsClient', 'FullscreenViewportX', ResWidth);
   Ini.WriteInteger('WinDrv.WindowsClient', 'FullscreenViewportY', ResHeight);
 
-  //Разрешение в окне
+  // Разрешение в окне
   ResWidth:=StrToIntDef(Copy(ResolutionsWndCB.Text, 1, Pos('x', ResolutionsWndCB.Text) - 1), 640);
   ResHeight:=StrToIntDef(Copy(ResolutionsWndCB.Text, Pos('x', ResolutionsWndCB.Text) + 1, Length(ResolutionsWndCB.Text)), 480);
   Ini.WriteInteger('WinDrv.WindowsClient', 'WindowedViewportX', ResWidth);
@@ -374,7 +378,7 @@ begin
     Ini.WriteString('Engine.PlayerController', 'DefaultFOV', FOV);
     Ini.WriteString('Engine.PlayerController', 'DefaultFOV', FOV);
 
-    //OpenGL иногда вылетает, а иногда решает проблемы с совместимостью
+    // OpenGL иногда вылетает, а иногда решает проблемы с совместимостью
     if HardwareAccelerationCB.Checked then
       Ini.WriteString('Engine.Engine', 'RenderDevice', 'D3DDrv.D3DRenderDevice')
     else
@@ -394,9 +398,11 @@ begin
       Ini.WriteString('Engine.Input', 'F10', 'set kwgame.kwversion bdebugenabled false');
   Ini.Free;
 
-  //Атрибуты только для чтения
-  FileSetAttr(MainConfigPath, faReadOnly);
-  FileSetAttr(SubConfigPath, faReadOnly);
+  // Атрибуты только для чтения
+  if SettingsReadOnlyCB.Checked then begin
+    FileSetAttr(MainConfigPath, faReadOnly);
+    FileSetAttr(SubConfigPath, faReadOnly);
+  end;
 
   if (GameCB.Text <> 'Harry Potter III') then
     Application.MessageBox(PChar(IDS_DONE + #13#10 + #13#10 + StringReplace(IDS_DONE_HP1_2, '\n', #13#10, [rfReplaceAll])), PChar(Caption), MB_ICONINFORMATION)
@@ -408,8 +414,8 @@ end;
 
 procedure TMain.AboutBtnClick(Sender: TObject);
 begin
-  Application.MessageBox(PChar(Caption + ' 1.0.5' + #13#10 +
-  IDS_LAST_UPDATE + ' 22.02.2021' + #13#10 +
+  Application.MessageBox(PChar(Caption + ' 1.0.6' + #13#10 +
+  IDS_LAST_UPDATE + ' 07.06.2021' + #13#10 +
   'https://r57zone.github.io' + #13#10 +
   'r57zone@gmail.com'), PChar(Caption), MB_ICONINFORMATION);
 end;

@@ -4,7 +4,7 @@ object Main: TMain
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Harry Potter Settings'
-  ClientHeight = 301
+  ClientHeight = 324
   ClientWidth = 336
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -38,7 +38,7 @@ object Main: TMain
     Left = 8
     Top = 40
     Width = 321
-    Height = 97
+    Height = 121
     Caption = #1048#1075#1088#1072
     TabOrder = 1
     object WindowModeCB: TCheckBox
@@ -65,10 +65,20 @@ object Main: TMain
       Caption = #1040#1087#1087#1072#1088#1072#1090#1085#1086#1077' '#1091#1089#1082#1086#1088#1077#1085#1080#1077
       TabOrder = 1
     end
+    object SettingsReadOnlyCB: TCheckBox
+      Left = 8
+      Top = 96
+      Width = 305
+      Height = 17
+      Caption = #1040#1090#1088#1080#1073#1091#1090' "'#1090#1086#1083#1100#1082#1086' '#1076#1083#1103' '#1095#1090#1077#1085#1080#1103'" '#1076#1083#1103' '#1092#1072#1081#1083#1072' '#1085#1072#1089#1090#1088#1086#1077#1082
+      Checked = True
+      State = cbChecked
+      TabOrder = 3
+    end
   end
   object VideoGB: TGroupBox
     Left = 8
-    Top = 144
+    Top = 168
     Width = 321
     Height = 118
     Caption = #1048#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077
@@ -158,7 +168,7 @@ object Main: TMain
   end
   object ApplyBtn: TButton
     Left = 8
-    Top = 268
+    Top = 292
     Width = 75
     Height = 25
     Caption = #1055#1088#1080#1084#1077#1085#1080#1090#1100
@@ -167,7 +177,7 @@ object Main: TMain
   end
   object CloseBtn: TButton
     Left = 88
-    Top = 268
+    Top = 292
     Width = 75
     Height = 25
     Caption = #1042#1099#1093#1086#1076
@@ -176,7 +186,7 @@ object Main: TMain
   end
   object AboutBtn: TButton
     Left = 301
-    Top = 268
+    Top = 292
     Width = 27
     Height = 25
     Caption = '?'
