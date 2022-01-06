@@ -55,7 +55,7 @@ var
   Main: TMain;
   HP3DocPath: string;
 
-  IDS_NO_GAMES_FOUND, IDS_DONE, IDS_DONE_HP1_2, IDS_DONE_HP3, IDS_HARDWARE_ACCELERATION, IDS_DIRECTX, IDS_LAST_UPDATE: string;
+  IDS_NO_GAMES_FOUND, IDS_DONE, IDS_DONE_HP1_2, IDS_DONE_HP3, IDS_HARDWARE_ACCELERATION, IDS_DIRECTX, IDS_WARNING_HW_DISABLED, IDS_LAST_UPDATE: string;
 
 implementation
 
@@ -154,6 +154,7 @@ begin
     IDS_DONE_HP1_2:=Ini.ReadString('Main', 'IDS_DONE_HP1_2', '');
     IDS_DONE_HP3:=Ini.ReadString('Main', 'IDS_DONE_HP3', '');
     IDS_DIRECTX:=Ini.ReadString('Main', 'IDS_DIRECTX', '');
+    IDS_WARNING_HW_DISABLED:=Ini.ReadString('Main', 'IDS_WARNING_HW_DISABLED', '');
     IDS_LAST_UPDATE:=Ini.ReadString('Main', 'IDS_LAST_UPDATE', '');
     CloseBtn.Caption:=Ini.ReadString('Main', 'IDS_CLOSE', '');
 
@@ -404,6 +405,9 @@ begin
     FileSetAttr(SubConfigPath, faReadOnly);
   end;
 
+  if (GameCB.Text = 'Harry Potter I') and (HardwareAccelerationCB.Checked = false) then
+    Application.MessageBox(PChar(StringReplace(IDS_WARNING_HW_DISABLED, '\n', #13#10, [rfReplaceAll])), PChar(Caption), MB_ICONWARNING);
+
   if (GameCB.Text <> 'Harry Potter III') then
     Application.MessageBox(PChar(IDS_DONE + #13#10 + #13#10 + StringReplace(IDS_DONE_HP1_2, '\n', #13#10, [rfReplaceAll])), PChar(Caption), MB_ICONINFORMATION)
   else
@@ -414,8 +418,8 @@ end;
 
 procedure TMain.AboutBtnClick(Sender: TObject);
 begin
-  Application.MessageBox(PChar(Caption + ' 1.0.6' + #13#10 +
-  IDS_LAST_UPDATE + ' 07.06.2021' + #13#10 +
+  Application.MessageBox(PChar(Caption + ' 1.0.7' + #13#10 +
+  IDS_LAST_UPDATE + ' 06.01.2022' + #13#10 +
   'https://r57zone.github.io' + #13#10 +
   'r57zone@gmail.com'), PChar(Caption), MB_ICONINFORMATION);
 end;
