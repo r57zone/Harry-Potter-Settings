@@ -375,10 +375,6 @@ begin
     FOV:=Copy(FOV, 1, Pos(' ', FOV) - 1);
 
   if GameCB.Text = 'Harry Potter III' then begin
-    Ini.WriteString('Engine.PlayerController', 'DesiredFOV', FOV);
-    Ini.WriteString('Engine.PlayerController', 'DefaultFOV', FOV);
-    Ini.WriteString('Engine.PlayerController', 'DefaultFOV', FOV);
-
     // OpenGL иногда вылетает, а иногда решает проблемы с совместимостью
     if HardwareAccelerationCB.Checked then
       Ini.WriteString('Engine.Engine', 'RenderDevice', 'D3DDrv.D3DRenderDevice')
@@ -392,11 +388,16 @@ begin
   if (GameCB.Text <> 'Harry Potter III') then begin
     Ini.WriteString('Engine.PlayerPawn', 'DesiredFOV', FOV);
     Ini.WriteString('Engine.PlayerPawn', 'DefaultFOV', FOV);
-    Ini.WriteString('Engine.Input', 'F10', 'flush'); //Исправление проблем с прозрачностью текстур
-  end else if DebugMenuCB.Checked then
-      Ini.WriteString('Engine.Input', 'F10', 'set kwgame.kwversion bdebugenabled true') //Режим отладки для HP3
+    Ini.WriteString('Engine.Input', 'F10', 'flush'); // Исправление проблем с прозрачностью текстур
+  end else begin
+    Ini.WriteString('Engine.PlayerController', 'DesiredFOV', FOV);
+    Ini.WriteString('Engine.PlayerController', 'DefaultFOV', FOV);
+
+    if DebugMenuCB.Checked then
+      Ini.WriteString('Engine.Input', 'F10', 'set kwgame.kwversion bdebugenabled true') // Режим отладки для HP3
     else
       Ini.WriteString('Engine.Input', 'F10', 'set kwgame.kwversion bdebugenabled false');
+  end;
   Ini.Free;
 
   // Атрибуты только для чтения
@@ -418,8 +419,8 @@ end;
 
 procedure TMain.AboutBtnClick(Sender: TObject);
 begin
-  Application.MessageBox(PChar(Caption + ' 1.0.7' + #13#10 +
-  IDS_LAST_UPDATE + ' 06.01.2022' + #13#10 +
+  Application.MessageBox(PChar(Caption + ' 1.0.8' + #13#10 +
+  IDS_LAST_UPDATE + ' 10.07.2022' + #13#10 +
   'https://r57zone.github.io' + #13#10 +
   'r57zone@gmail.com'), PChar(Caption), MB_ICONINFORMATION);
 end;
@@ -438,7 +439,8 @@ begin
     AspectRatio:=Copy(Main.FOVCB.Items.Strings[i], Pos('(', Main.FOVCB.Items.Strings[i]) + 1, Length(Main.FOVCB.Items.Strings[i]) - Pos('(', Main.FOVCB.Items.Strings[i]) - 1);
     ARWidth:=StrToIntDef(Copy(AspectRatio, 1, Pos(':', AspectRatio) - 1), 4);
     ARHeight:=StrToIntDef(Copy(AspectRatio, Pos(':', AspectRatio) + 1, Length(AspectRatio)), 3);
-    if Round((ResWidth / ResHeight) * 100) = Round((ARWidth / ARHeight) * 100) then begin
+    //if Round((ResWidth / ResHeight) * 100) = Round((ARWidth / ARHeight) * 100) then begin
+    if (Round((ResWidth / ResHeight) * 100) div 10) = (Round((ARWidth / ARHeight) * 100)  div 10) then begin
       AspectFound:=true;
       Main.FOVCB.ItemIndex:=i;
       break;
