@@ -4,7 +4,7 @@ object Main: TMain
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Harry Potter Settings'
-  ClientHeight = 324
+  ClientHeight = 327
   ClientWidth = 336
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -30,7 +30,6 @@ object Main: TMain
     Width = 162
     Height = 21
     Style = csDropDownList
-    ItemHeight = 13
     TabOrder = 0
     OnChange = GameCBChange
   end
@@ -38,12 +37,12 @@ object Main: TMain
     Left = 8
     Top = 40
     Width = 321
-    Height = 121
+    Height = 118
     Caption = #1048#1075#1088#1072
     TabOrder = 1
     object WindowModeCB: TCheckBox
       Left = 8
-      Top = 24
+      Top = 20
       Width = 97
       Height = 17
       Caption = #1047#1072#1087#1091#1089#1082' '#1074' '#1086#1082#1085#1077
@@ -51,7 +50,7 @@ object Main: TMain
     end
     object DebugMenuCB: TCheckBox
       Left = 8
-      Top = 72
+      Top = 68
       Width = 97
       Height = 17
       Caption = #1056#1077#1078#1080#1084' '#1086#1090#1083#1072#1076#1082#1080
@@ -59,7 +58,7 @@ object Main: TMain
     end
     object HardwareAccelerationCB: TCheckBox
       Left = 8
-      Top = 48
+      Top = 44
       Width = 145
       Height = 17
       Caption = #1040#1087#1087#1072#1088#1072#1090#1085#1086#1077' '#1091#1089#1082#1086#1088#1077#1085#1080#1077
@@ -67,7 +66,7 @@ object Main: TMain
     end
     object SettingsReadOnlyCB: TCheckBox
       Left = 8
-      Top = 96
+      Top = 92
       Width = 305
       Height = 17
       Caption = #1040#1090#1088#1080#1073#1091#1090' "'#1090#1086#1083#1100#1082#1086' '#1076#1083#1103' '#1095#1090#1077#1085#1080#1103'" '#1076#1083#1103' '#1092#1072#1081#1083#1072' '#1085#1072#1089#1090#1088#1086#1077#1082
@@ -99,7 +98,7 @@ object Main: TMain
     end
     object ResolutionWndLbl: TLabel
       Left = 8
-      Top = 59
+      Top = 58
       Width = 102
       Height = 13
       Caption = #1056#1072#1079#1088#1077#1096#1077#1085#1080#1077' '#1074' '#1086#1082#1085#1077':'
@@ -109,7 +108,6 @@ object Main: TMain
       Top = 23
       Width = 97
       Height = 21
-      ItemHeight = 13
       TabOrder = 0
       Text = '640x480'
       OnChange = ResolutionsCBChange
@@ -130,10 +128,9 @@ object Main: TMain
     end
     object FOVCB: TComboBox
       Left = 216
-      Top = 88
+      Top = 87
       Width = 97
       Height = 21
-      ItemHeight = 13
       TabOrder = 2
       Text = '90 (4:3)'
       Items.Strings = (
@@ -143,10 +140,9 @@ object Main: TMain
     end
     object ResolutionsWndCB: TComboBox
       Left = 216
-      Top = 56
+      Top = 55
       Width = 97
       Height = 21
-      ItemHeight = 13
       TabOrder = 1
       Text = '640x480'
       OnChange = ResolutionsWndCBChange
@@ -192,9 +188,5 @@ object Main: TMain
     Caption = '?'
     TabOrder = 5
     OnClick = AboutBtnClick
-  end
-  object XPManifest: TXPManifest
-    Left = 288
-    Top = 8
   end
 end
