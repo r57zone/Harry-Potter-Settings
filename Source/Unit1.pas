@@ -116,10 +116,14 @@ begin
     HP3DocPath:='Гарри Поттер и узник Азкабана';
   if DirectoryExists(DocumentsPath + '\' + 'Harry Potter™ e il prigioniero di Azkaban') then // Italian
     HP3DocPath:='Harry Potter™ e il prigioniero di Azkaban';
-  if DirectoryExists(DocumentsPath + '\' + 'Harry Potter(TM) och Fången från Azkaban') then // Swedish
-    HP3DocPath:='Harry Potter(TM) och Fången från Azkaban';
-  if DirectoryExists(DocumentsPath + '\' + 'Harry Potter(TM) en de Gevangene van Azkaban') then // Dutch
-    HP3DocPath:='Harry Potter(TM) en de Gevangene van Azkaban';
+  if DirectoryExists(DocumentsPath + '\' + 'Harry Potter™ och Fången från Azkaban') then // Swedish
+    HP3DocPath:='Harry Potter™ och Fången från Azkaban';
+  if DirectoryExists(DocumentsPath + '\' + 'Harry Potter™ en de Gevangene van Azkaban') then // Dutch
+    HP3DocPath:='Harry Potter™ en de Gevangene van Azkaban';
+  if DirectoryExists(DocumentsPath + '\' + 'Harry Potter et le prisonnier d''Azkaban™') then // French
+    HP3DocPath:='Harry Potter et le prisonnier d''Azkaban™';
+  if DirectoryExists(DocumentsPath + '\' + 'Harry Potter und der Gefangene von Askaban™') then // German
+    HP3DocPath:='Harry Potter und der Gefangene von Askaban™';
 
   if FileExists(DocumentsPath + '\' + HP3DocPath + '\' + HP3MainConfig) then
     GameCB.Items.Add('Harry Potter III');
