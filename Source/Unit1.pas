@@ -111,19 +111,35 @@ begin
     GameCB.Items.Add('Harry Potter II - Demo 2');
 
   if DirectoryExists(DocumentsPath + '\' + 'Harry Potter and the Prisoner of Azkaban') then
-    HP3DocPath:='Harry Potter and the Prisoner of Azkaban';
-  if DirectoryExists(DocumentsPath + '\' + 'Гарри Поттер и узник Азкабана') then // Russian
-    HP3DocPath:='Гарри Поттер и узник Азкабана';
-  if DirectoryExists(DocumentsPath + '\' + 'Harry Potter™ e il prigioniero di Azkaban') then // Italian
-    HP3DocPath:='Harry Potter™ e il prigioniero di Azkaban';
-  if DirectoryExists(DocumentsPath + '\' + 'Harry Potter™ och Fången från Azkaban') then // Swedish
-    HP3DocPath:='Harry Potter™ och Fången från Azkaban';
-  if DirectoryExists(DocumentsPath + '\' + 'Harry Potter™ en de Gevangene van Azkaban') then // Dutch
-    HP3DocPath:='Harry Potter™ en de Gevangene van Azkaban';
-  if DirectoryExists(DocumentsPath + '\' + 'Harry Potter et le prisonnier d''Azkaban™') then // French
-    HP3DocPath:='Harry Potter et le prisonnier d''Azkaban™';
-  if DirectoryExists(DocumentsPath + '\' + 'Harry Potter und der Gefangene von Askaban™') then // German
-    HP3DocPath:='Harry Potter und der Gefangene von Askaban™';
+    HP3DocPath:='Harry Potter and the Prisoner of Azkaban'
+  else if DirectoryExists(DocumentsPath + '\' + 'Гарри Поттер и узник Азкабана') then // Russian
+    HP3DocPath:='Гарри Поттер и узник Азкабана'
+  else if DirectoryExists(DocumentsPath + '\' + 'Harry Potter™ e il prigioniero di Azkaban') then // Italian
+    HP3DocPath:='Harry Potter™ e il prigioniero di Azkaban'
+  else if DirectoryExists(DocumentsPath + '\' + 'Harry Potter och Fången från Azkaban') then // Swedish
+    HP3DocPath:='Harry Potter och Fången från Azkaban'
+  else if DirectoryExists(DocumentsPath + '\' + 'Harry Potter™ en de Gevangene van Azkaban') then // Dutch
+    HP3DocPath:='Harry Potter™ en de Gevangene van Azkaban'
+  else if DirectoryExists(DocumentsPath + '\' + 'Harry Potter et le prisonnier d''Azkaban') then // French
+    HP3DocPath:='Harry Potter et le prisonnier d''Azkaban'
+  else if DirectoryExists(DocumentsPath + '\' + 'Harry Potter und der Gefangene von Askaban') then // German
+    HP3DocPath:='Harry Potter und der Gefangene von Askaban'
+  else if DirectoryExists(DocumentsPath + '\' + 'Harry Potter a vězeň z Azkabanu') then // Czech
+    HP3DocPath:='Harry Potter a vězeň z Azkabanu'
+  else if DirectoryExists(DocumentsPath + '\' + 'Harry Potter i więzień Azkabanu') then // Polish
+    HP3DocPath:='Harry Potter i więzień Azkabanu'
+  else if DirectoryExists(DocumentsPath + '\' + 'Harry Potter og fangen fra Azkaban') then // Danish
+    HP3DocPath:='Harry Potter og fangen fra Azkaban'
+  else if DirectoryExists(DocumentsPath + '\' + 'Harry Potter og Fangen fra Azkaban') then // Norwegian
+    HP3DocPath:='Harry Potter og Fangen fra Azkaban'
+  else if DirectoryExists(DocumentsPath + '\' + 'Harry Potter y el prisionero de Azkaban') then // Spanish
+    HP3DocPath:='Harry Potter y el prisionero de Azkaban'
+  else if DirectoryExists(DocumentsPath + '\' + 'Harry Potter(tm) e o Prisioneiro de Azkaban') then // Portuguese (Brazil)
+    HP3DocPath:='Harry Potter(tm) e o Prisioneiro de Azkaban'
+  else if DirectoryExists(DocumentsPath + '\' + 'Harry Potter e o Prisioneiro de Azkaban') then // Portuguese (Portugal)
+    HP3DocPath:='Harry Potter e o Prisioneiro de Azkaban'
+  else if DirectoryExists(DocumentsPath + '\' + 'ハリー・ポッターとアズカバンの囚人') then // Japanese
+    HP3DocPath:='ハリー・ポッターとアズカバンの囚人';
 
   if FileExists(DocumentsPath + '\' + HP3DocPath + '\' + HP3MainConfig) then
     GameCB.Items.Add('Harry Potter III');
@@ -427,7 +443,7 @@ end;
 procedure TMain.AboutBtnClick(Sender: TObject);
 begin
   Application.MessageBox(PChar(Caption + ' 1.0.9' + #13#10 +
-  IDS_LAST_UPDATE + ' 09.10.2022' + #13#10 +
+  IDS_LAST_UPDATE + ' 10.10.2022' + #13#10 +
   'https://r57zone.github.io' + #13#10 +
   'r57zone@gmail.com'), PChar(Caption), MB_ICONINFORMATION);
 end;
