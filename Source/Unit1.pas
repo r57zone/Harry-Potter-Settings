@@ -139,13 +139,13 @@ begin
   else if DirectoryExists(DocumentsPath + '\' + 'Harry Potter e o Prisioneiro de Azkaban') then // Portuguese (Portugal)
     HP3DocPath:='Harry Potter e o Prisioneiro de Azkaban'
   else if DirectoryExists(DocumentsPath + '\' + 'ハリー・ポッターとアズカバンの囚人') then // Japanese
-    HP3DocPath:='ハリー・ポッターとアズカバンの囚人' else
- if DirectoryExists(DocumentsPath + 'แฮร์รี่ พอตเตอร์กับนักโทษแห่งอัซคาบัน') then // Thai
-   HP3DocPath:='แฮร์รี่ พอตเตอร์กับนักโทษแห่งอัซคาบัน' else
- if DirectoryExists(DocumentsPath + '哈利·波特和阿兹卡班的囚徒') then // Chinese (Simplified)
-   HP3DocPath:='哈利·波特和阿兹卡班的囚徒' else
- if DirectoryExists(DocumentsPath + '哈利波特－阿茲卡班的囚犯') then // Chinese (Traditional)
-   HP3DocPath:='哈利波特－阿茲卡班的囚犯';
+    HP3DocPath:='ハリー・ポッターとアズカバンの囚人'
+  else if DirectoryExists(DocumentsPath  + '\' + 'แฮร์รี่ พอตเตอร์กับนักโทษแห่งอัซคาบัน') then // Thai
+    HP3DocPath:='แฮร์รี่ พอตเตอร์กับนักโทษแห่งอัซคาบัน'
+  else if DirectoryExists(DocumentsPath  + '\' + '哈利·波特和阿兹卡班的囚徒') then // Chinese (Simplified)
+    HP3DocPath:='哈利·波特和阿兹卡班的囚徒'
+  else if DirectoryExists(DocumentsPath  + '\' + '哈利波特－阿茲卡班的囚犯') then // Chinese (Traditional)
+    HP3DocPath:='哈利波特－阿茲卡班的囚犯';
 
   if FileExists(DocumentsPath + '\' + HP3DocPath + '\' + HP3MainConfig) then
     GameCB.Items.Add('Harry Potter III');
@@ -449,7 +449,7 @@ end;
 procedure TMain.AboutBtnClick(Sender: TObject);
 begin
   Application.MessageBox(PChar(Caption + ' 1.0.9' + #13#10 +
-  IDS_LAST_UPDATE + ' 10.10.2022' + #13#10 +
+  IDS_LAST_UPDATE + ' 11.10.2022' + #13#10 +
   'https://r57zone.github.io' + #13#10 +
   'r57zone@gmail.com'), PChar(Caption), MB_ICONINFORMATION);
 end;
