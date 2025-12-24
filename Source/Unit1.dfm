@@ -12,10 +12,8 @@ object Main: TMain
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 13
   object SelectGameLbl: TLabel
     Left = 10
@@ -70,8 +68,6 @@ object Main: TMain
       Width = 305
       Height = 17
       Caption = #1040#1090#1088#1080#1073#1091#1090' "'#1090#1086#1083#1100#1082#1086' '#1076#1083#1103' '#1095#1090#1077#1085#1080#1103'" '#1076#1083#1103' '#1092#1072#1081#1083#1072' '#1085#1072#1089#1090#1088#1086#1077#1082
-      Checked = True
-      State = cbChecked
       TabOrder = 3
     end
   end

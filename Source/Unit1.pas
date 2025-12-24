@@ -448,8 +448,8 @@ end;
 
 procedure TMain.AboutBtnClick(Sender: TObject);
 begin
-  Application.MessageBox(PChar(Caption + ' 1.0.9' + #13#10 +
-  IDS_LAST_UPDATE + ' 11.10.2022' + #13#10 +
+  Application.MessageBox(PChar(Caption + ' 1.1' + #13#10 +
+  IDS_LAST_UPDATE + ' 24.12.25' + #13#10 +
   'https://r57zone.github.io' + #13#10 +
   'r57zone@gmail.com'), PChar(Caption), MB_ICONINFORMATION);
 end;
