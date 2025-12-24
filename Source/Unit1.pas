@@ -230,6 +230,8 @@ begin
     SubConfigPath:=DocumentsPath + '\' + HP3DocPath + '\User.ini';
   end;
 
+  SettingsReadOnlyCB.Checked:=((FileGetAttr(MainConfigPath) and faReadOnly) <> 0) or ((FileGetAttr(SubConfigPath) and faReadOnly) <> 0);
+
   Ini:=TIniFile.Create(MainConfigPath);
   // Запуск в окне
   WindowModeCB.Checked:=Ini.ReadString('WinDrv.WindowsClient', 'StartupFullscreen', 'True') <> 'True';
@@ -433,6 +435,9 @@ begin
   if SettingsReadOnlyCB.Checked then begin
     FileSetAttr(MainConfigPath, faReadOnly);
     FileSetAttr(SubConfigPath, faReadOnly);
+  end else begin
+    FileSetAttr(MainConfigPath, 0);
+    FileSetAttr(SubConfigPath, 0);
   end;
 
   if (GameCB.Text = 'Harry Potter I') and (HardwareAccelerationCB.Checked = false) then
