@@ -16,7 +16,7 @@
 ![](https://user-images.githubusercontent.com/9499881/53476949-0a5a4a80-3a8d-11e9-9c49-c858a893a829.png)
 
 ## Загрузка
->Версия для 7, 8.1, 10.
+>Версия для 7, 8, 10, 11.
 
 **[Загрузить](https://github.com/r57zone/Harry-Potter-Settings/releases)**
 

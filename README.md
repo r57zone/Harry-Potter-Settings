@@ -18,7 +18,7 @@ Pressing the "F10" key in the game fixes textures problems.
 ![](https://user-images.githubusercontent.com/9499881/74330379-03663e00-4dab-11ea-90fb-1c4bbc817cd2.png)
 
 ## Download
->Version for Windows 7, 8.1, 10.
+>Version for Windows 7, 8, 10, 11.
 
 **[Download](https://github.com/r57zone/Harry-Potter-Settings/releases)**
 
